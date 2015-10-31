@@ -5,7 +5,7 @@ Send jQuery ajax requests one by one or pararell
 
 Call jQuery.ajaxs() function with an array on jQuery ajax settings and use [done function](https://api.jquery.com/deferred.done/).
 
-$.ajaxs([ajaxs](http://api.jquery.com/jquery.ajax/) [, useParallel: false]): [Promise](http://api.jquery.com/Types/#Promise)
+$.ajaxs([ajaxs](http://api.jquery.com/jquery.ajax/) [, settings]): [Promise](http://api.jquery.com/Types/#Promise)
 
 ### Parameters
 
@@ -14,11 +14,18 @@ $.ajaxs([ajaxs](http://api.jquery.com/jquery.ajax/) [, useParallel: false]): [Pr
 *type*: Array  
 An array of [jQuery ajax request settings](http://api.jquery.com/jquery.ajax/)
 
-### useParallel
+#### settings
 
-*type*: Boolean  
-*default*: false  
-True to use *parallel* mode, false to use *one by one* mode
+*type*: Object  
+An object of settings
+
+### Settings
+
+#### mode
+
+*type*: String  
+*default*: 'onebyone'  
+Use *parallel* or  *onebyone* mode
 
 ### Return
 
@@ -84,7 +91,10 @@ Finished OK
 ### Parallel
 
 ```javascript
-$.ajaxs(ajaxs, true)
+$.ajaxs(ajaxs,
+	{
+		mode: 'parallel'
+	})
     .done(function() {
         console.log("Finished OK");
     })

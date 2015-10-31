@@ -65,9 +65,14 @@
 		}
 	};
 
-	$.ajaxs = function(ajaxs, parallel) {
+	var defaultSettings = {
+		mode: 'onebyone'
+	};
+
+	$.ajaxs = function(ajaxs, settings) {
+		settings = $.extend(true, {}, defaultSettings, settings);
 		var task;
-		if (parallel) {
+		if (settings.mode === 'parallel') {
 			task = new Parallel(ajaxs);
 		}
 		else {
