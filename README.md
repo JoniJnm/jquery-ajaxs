@@ -20,12 +20,12 @@ An array of [jQuery ajax request settings](http://api.jquery.com/jquery.ajax/)
 *default*: false  
 True to use *parallel* mode, false to use *one by one* mode
 
-#### Return
+### Return
 
 *type*: [Promise](http://api.jquery.com/Types/#Promise)  
 A Promise object with done, fail, always... functions
 
-The deferred is resolved with the last resolve's ajax
+The deferred is resolved with the last resolve's ajax  
 The deferred is rejected with the first reject's ajax
 
 ## Examples
@@ -35,13 +35,13 @@ The deferred is rejected with the first reject's ajax
 ```php
 <?php
 if (isset($_GET['pos'])) {
-    sleep(1);
+    usleep(rand(300, 1000)*1000);
     echo "pos: ".$_GET['pos'];
     exit;
 }
 ```
 
-### Settings
+### jQuery Ajax requests
 
 ```javascript
 var total = 4;
@@ -67,9 +67,38 @@ $.ajaxs(ajaxs)
         console.log("Finished OK");
     })
     .fail(function(jqXHR, textStatus, errorThrown) {
-        console.log("Finished KO");
-        console.error(textStatus, errorThrown);
+        console.error("Finished KO", textStatus, errorThrown);
     });
 ```
 
-#### Output
+##### Ouput:
+
+```
+Done! pos: 0  
+Done! pos: 1  
+Done! pos: 2  
+Done! pos: 3  
+Finished OK
+```
+
+### Parallel
+
+```javascript
+$.ajaxs(ajaxs, true)
+    .done(function() {
+        console.log("Finished OK");
+    })
+    .fail(function(jqXHR, textStatus, errorThrown) {
+        console.error("Finished KO", textStatus, errorThrown);
+    });
+```
+
+##### Ouput:
+
+```
+Done! pos: 2  
+Done! pos: 1  
+Done! pos: 0  
+Done! pos: 3  
+Finished OK
+```
