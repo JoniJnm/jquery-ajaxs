@@ -1,0 +1,24 @@
+{
+  "name": "jquery.ajaxs",
+  "description": "Send jQuery ajax requests one by one or pararell",
+  "main": "dist/jquery-ajaxs.min.js",
+  "authors": [
+    "JoniJnm"
+  ],
+  "license": "GPL-2.0",
+  "keywords": [
+    "jquery",
+    "ajax",
+    "ajaxs",
+    "requests"
+  ],
+  "moduleType": [],
+  "homepage": "http://www.jonijnm.es",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
