@@ -1,7 +1,7 @@
 {
   "name": "jquery.ajaxs",
   "description": "Send jQuery ajax requests one by one or pararell",
-  "main": "dist/jquery-ajaxs.min.js",
+  "main": "dist/jquery.ajaxs.min.js",
   "authors": [
     "JoniJnm"
   ],

@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://JoniJnm@github.com/JoniJnm/jquery-ajaxs.git"
+    "url": "git+https://JoniJnm@github.com/JoniJnm/jquery.ajaxs.git"
   },
   "keywords": [
     "jquery",
@@ -19,9 +19,9 @@
   "author": "JoniJnm",
   "license": "GPL-2.0",
   "bugs": {
-    "url": "https://github.com/JoniJnm/jquery-ajaxs/issues"
+    "url": "https://github.com/JoniJnm/jquery.ajaxs/issues"
   },
-  "homepage": "https://github.com/JoniJnm/jquery-ajaxs#readme",
+  "homepage": "https://github.com/JoniJnm/jquery.ajaxs#readme",
   "devDependencies": {
     "gulp": "^3.9.0",
     "gulp-jshint": "^1.12.0",
