@@ -2,6 +2,9 @@
   "name": "jquery.ajaxs",
   "version": "1.0.0",
   "description": "Send jQuery ajax requests one by one or pararell",
+  "dependencies": {
+    "jquery": ">= 1.7.0"
+  },
   "main": "dist/jquery.ajaxs.min.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
