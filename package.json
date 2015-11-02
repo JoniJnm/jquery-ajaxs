@@ -1,6 +1,6 @@
 {
   "name": "jquery.ajaxs",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "Send jQuery ajax requests one by one or pararell",
   "dependencies": {
     "jquery": ">= 1.7.0"

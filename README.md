@@ -1,25 +1,31 @@
 # jQuery Ajaxs Plugin
 Send jQuery ajax requests one by one or pararell
 
-## Usage
+Methods
+-------
+Methods library
 
-Call jQuery.ajaxs() function with an array on jQuery ajax settings and use [done function](https://api.jquery.com/deferred.done/).
+* * *
 
-$.ajaxs([ajaxs](http://api.jquery.com/jquery.ajax/) [, settings]): [Promise](http://api.jquery.com/Types/#Promise)
+### $.ajaxs(ajaxs [, settings]): AjaxsPromise
+Call jQuery ajaxs requests one by one or parallel
+#### Arguments
+1. `ajaxs` (**Object[]**) An array of [jQuery ajax request settings](http://api.jquery.com/jquery.ajax/)
+2. `settings` (**Object: optional**) jQuery Ajaxs Settings
+#### Returns
+**[AjaxsPromise](#ajaxspromise-methods)**: The jQuery promise object extended
 
-### Parameters
+* * *
 
-#### ajaxs
+### $.ajaxsManager(): AjaxsManager
+Like a builder object to call $.ajaxs easily
+#### Returns
+**[AjaxsManager](#ajaxspromise-methods)**
 
-*type*: Array  
-An array of [jQuery ajax request settings](http://api.jquery.com/jquery.ajax/)
-
-#### settings
-
-*type*: Object  
-An object of settings
-
-### Settings
+Settings
+-------
+Ajaxs Settings
+* * *
 
 #### mode
 
@@ -27,15 +33,61 @@ An object of settings
 *default*: 'onebyone'  
 Use *parallel* or  *onebyone* mode
 
-### Return
+AjaxsManager Methods
+-------
 
-*type*: [Promise](http://api.jquery.com/Types/#Promise)  
-A Promise object with done, fail, always... functions
+* * *
+
+### setParallel(): AjaxsManager
+Set *parallel* mode
+#### Returns
+**[AjaxsManager](#ajaxspromise-methods)**
+
+* * *
+
+### setOnebyOne(): AjaxsManager
+Set *onebyone* mode
+#### Returns
+**[AjaxsManager](#ajaxspromise-methods)**
+
+* * *
+
+### add(settings): AjaxsManager
+Set *onebyone* mode
+#### Arguments
+1. `settings` (**Object**) [jQuery ajax request settings](http://api.jquery.com/jquery.ajax/)
+#### Returns
+**[AjaxsManager](#ajaxspromise-methods)**
+
+* * *
+
+### abort(): AjaxsManager
+Aborts the ajaxs
+#### Returns
+**[AjaxsManager](#ajaxspromise-methods)**
+
+* * *
+
+### run(): AjaxsManager
+Run all the ajax added
+#### Returns
+**[AjaxsPromise](#ajaxspromise-methods)**: The jQuery promise object extended
+
+# AjaxsPromise Methods
+-------
+A [jQuery Promise](http://api.jquery.com/Types/#Promise) object with done, fail, always, pipe... functions.
 
 The deferred is resolved with the last resolve's ajax  
 The deferred is rejected with the first reject's ajax
+* * *
 
-## Examples
+### abort(): AjaxsPromise
+Aborts the ajaxs
+#### Returns
+**[AjaxsPromise](#ajaxspromise-methods)**
+
+Examples
+-------
 
 ### test.php
 
