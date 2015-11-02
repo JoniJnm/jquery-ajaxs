@@ -1,6 +1,23 @@
 # jQuery Ajaxs Plugin
 Send jQuery ajax requests one by one or pararell
 
+```javascript
+$.ajaxs([{
+		url: '/task/1',
+		data: 'myparam=testing',
+		method: 'post'
+	},{
+		url: '/task/2',
+		method: 'post'
+	}])
+	.done(function() {
+		console.log('Both task done one by one!');
+	})
+	.fail(function(jqXHR, textStatus, errorThrown) {
+		console.log('Something was wrong :( ', errorThrown);
+	});
+```
+
 Methods
 -------
 Methods library
@@ -120,7 +137,7 @@ for (var i=0; i<total; i++) {
             pos: i
         },
         success: function(data) {
-            console.log("Done! "+data);
+            console.log('Done! '+data);
         }
     });
 }
@@ -131,10 +148,10 @@ for (var i=0; i<total; i++) {
 ```javascript
 $.ajaxs(ajaxs)
     .done(function() {
-        console.log("Finished OK");
+        console.log('Finished OK');
     })
     .fail(function(jqXHR, textStatus, errorThrown) {
-        console.error("Finished ERROR", textStatus, errorThrown);
+        console.error('Finished ERROR ', textStatus, errorThrown);
     });
 ```
 
@@ -156,10 +173,10 @@ $.ajaxs(ajaxs,
 		mode: 'parallel'
 	})
     .done(function() {
-        console.log("Finished OK");
+        console.log('Finished OK');
     })
     .fail(function(jqXHR, textStatus, errorThrown) {
-        console.error("Finished ERROR", textStatus, errorThrown);
+        console.error('Finished ERROR ', textStatus, errorThrown);
     });
 ```
 
@@ -195,6 +212,6 @@ $.ajaxsManager()
 		console.log('Finish OK!');
 	})
 	.fail(function() {
-		console.log('Finish Error', arguments);
+		console.log('Finish Error ', arguments);
 	});
 ```
