@@ -11,7 +11,8 @@ Methods library
 Call jQuery ajaxs requests one by one or parallel
 #### Arguments
 1. `ajaxs` (**Object[]**) An array of [jQuery ajax request settings](http://api.jquery.com/jquery.ajax/)
-2. `settings` (**Object: optional**) jQuery Ajaxs Settings
+2. `settings` (**Object: optional**) jQuery [Ajaxs Settings](#settings)
+
 #### Returns
 **[AjaxsPromise](#ajaxspromise-methods)**: The jQuery promise object extended
 
@@ -19,6 +20,7 @@ Call jQuery ajaxs requests one by one or parallel
 
 ### $.ajaxsManager(): AjaxsManager
 Like a builder object to call $.ajaxs easily
+
 #### Returns
 **[AjaxsManager](#ajaxspromise-methods)**
 
@@ -40,6 +42,7 @@ AjaxsManager Methods
 
 ### setParallel(): AjaxsManager
 Set *parallel* mode
+
 #### Returns
 **[AjaxsManager](#ajaxspromise-methods)**
 
@@ -47,6 +50,7 @@ Set *parallel* mode
 
 ### setOnebyOne(): AjaxsManager
 Set *onebyone* mode
+
 #### Returns
 **[AjaxsManager](#ajaxspromise-methods)**
 
@@ -56,6 +60,7 @@ Set *onebyone* mode
 Set *onebyone* mode
 #### Arguments
 1. `settings` (**Object**) [jQuery ajax request settings](http://api.jquery.com/jquery.ajax/)
+
 #### Returns
 **[AjaxsManager](#ajaxspromise-methods)**
 
@@ -63,6 +68,7 @@ Set *onebyone* mode
 
 ### abort(): AjaxsManager
 Aborts the ajaxs
+
 #### Returns
 **[AjaxsManager](#ajaxspromise-methods)**
 
@@ -70,6 +76,7 @@ Aborts the ajaxs
 
 ### run(): AjaxsManager
 Run all the ajax added
+
 #### Returns
 **[AjaxsPromise](#ajaxspromise-methods)**: The jQuery promise object extended
 
@@ -83,6 +90,7 @@ The deferred is rejected with the first reject's ajax
 
 ### abort(): AjaxsPromise
 Aborts the ajaxs
+
 #### Returns
 **[AjaxsPromise](#ajaxspromise-methods)**
 
@@ -126,7 +134,7 @@ $.ajaxs(ajaxs)
         console.log("Finished OK");
     })
     .fail(function(jqXHR, textStatus, errorThrown) {
-        console.error("Finished KO", textStatus, errorThrown);
+        console.error("Finished ERROR", textStatus, errorThrown);
     });
 ```
 
@@ -151,7 +159,7 @@ $.ajaxs(ajaxs,
         console.log("Finished OK");
     })
     .fail(function(jqXHR, textStatus, errorThrown) {
-        console.error("Finished KO", textStatus, errorThrown);
+        console.error("Finished ERROR", textStatus, errorThrown);
     });
 ```
 
@@ -163,4 +171,30 @@ Done! pos: 1
 Done! pos: 0  
 Done! pos: 3  
 Finished OK
+```
+
+### Manager
+
+```javascript
+$.ajaxsManager()
+	.setParallel()
+	.add({
+		url: 'test.php',
+		data: {
+			pos: 1
+		}
+	})
+	.add({
+		url: 'test.php',
+		data: {
+			pos: 2
+		}
+	})
+	.run()
+	.done(function() {
+		console.log('Finish OK!');
+	})
+	.fail(function() {
+		console.log('Finish Error', arguments);
+	});
 ```
