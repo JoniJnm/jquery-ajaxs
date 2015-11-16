@@ -9,7 +9,9 @@ $.ajaxs([{
 	},{
 		url: '/task/2',
 		method: 'post'
-	}])
+	}], {
+		maxParallel: 1
+	})
 	.done(function() {
 		console.log('Both task done one by one!');
 	})
@@ -26,6 +28,7 @@ Methods library
 
 ### $.ajaxs(ajaxs [, settings]): AjaxsPromise
 Call jQuery ajaxs requests one by one or parallel
+
 #### Arguments
 1. `ajaxs` (**Object[]**) An array of [jQuery ajax request settings](http://api.jquery.com/jquery.ajax/)
 2. `settings` (**Object: optional**) jQuery [Ajaxs Settings](#settings)
@@ -41,32 +44,30 @@ Like a builder object to call $.ajaxs easily
 #### Returns
 **[AjaxsManager](#ajaxspromise-methods)**
 
+
 Settings
 -------
 Ajaxs Settings
+
 * * *
 
-#### mode
+#### maxParallel
 
-*type*: String  
-*default*: 'onebyone'  
-Use *parallel* or  *onebyone* mode
+*type*: int
+*default*: 1
+How many requests can be processed simultaneously. Set 0 for no limit
+
 
 AjaxsManager Methods
 -------
 
 * * *
 
-### setParallel(): AjaxsManager
-Set *parallel* mode
+### setMaxParallel(maxParallel): AjaxsManager
+Set maxParallel setting
 
-#### Returns
-**[AjaxsManager](#ajaxspromise-methods)**
-
-* * *
-
-### setOnebyOne(): AjaxsManager
-Set *onebyone* mode
+#### Arguments
+1. `maxParallel` (**Int**)
 
 #### Returns
 **[AjaxsManager](#ajaxspromise-methods)**
@@ -74,7 +75,8 @@ Set *onebyone* mode
 * * *
 
 ### add(settings): AjaxsManager
-Set *onebyone* mode
+Add one more request to call
+
 #### Arguments
 1. `settings` (**Object**) [jQuery ajax request settings](http://api.jquery.com/jquery.ajax/)
 
@@ -92,7 +94,7 @@ Aborts the ajaxs
 * * *
 
 ### run(): AjaxsManager
-Run all the ajax added
+Run all the ajax requests added
 
 #### Returns
 **[AjaxsPromise](#ajaxspromise-methods)**: The jQuery promise object extended
@@ -146,7 +148,9 @@ for (var i=0; i<total; i++) {
 ### One by one
 
 ```javascript
-$.ajaxs(ajaxs)
+$.ajaxs(ajaxs, {
+		maxParallel: 1
+	})
     .done(function() {
         console.log('Finished OK');
     })
@@ -170,7 +174,7 @@ Finished OK
 ```javascript
 $.ajaxs(ajaxs,
 	{
-		mode: 'parallel'
+		maxParallel: 3
 	})
     .done(function() {
         console.log('Finished OK');
@@ -194,7 +198,7 @@ Finished OK
 
 ```javascript
 $.ajaxsManager()
-	.setParallel()
+	.setMaxParallel(0)
 	.add({
 		url: 'test.php',
 		data: {

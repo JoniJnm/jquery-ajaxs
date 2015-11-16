@@ -24,13 +24,71 @@
 }(function ($) {
 	'use strict';
 
-	var BaseTask = function(ajaxs) {
+	var Parallel = function(ajaxs, settings) {
+		for (var i in settings) {
+			if (settings.hasOwnProperty(i)) {
+				this[i] = settings[i];
+			}
+		}
+
 		this.ajaxs = ajaxs;
 		this.total = ajaxs.length;
+		if (this.total === 0) {
+			this.aborted = true;
+			throw new Error('Ajaxs empty');
+		}
+		if (this.maxParallel <= 0) {
+			this.maxParallel = this.total;
+		}
 		this.aborted = false;
+
+		this.current = null;
+		this.defer = $.Deferred();
+		this.i = 0;
+		this.dones = 0;
+		this.calls = [];
 	};
 
-	BaseTask.prototype = {
+	Parallel.prototype = {
+		run: function() {
+			for (var i=0; i<this.maxParallel && i<this.total; i++) {
+				this.nextAjax();
+			}
+			return this.defer.promise(this.promiseExtend());
+		},
+		onDoneAjax: function() {
+			this.dones++;
+			if (this.dones === this.total) {
+				this.defer.resolve.apply(this.defer, arguments);
+			}
+			else {
+				this.nextAjax();
+			}
+		},
+		nextAjax: function() {
+			var i = this.i++;
+			if (i < this.total) {
+				this.createAjax(i);
+			}
+		},
+		createAjax: function(i) {
+			var settings = this.ajaxs[i];
+			this.current = $.ajax(settings);
+			this.calls.push(this.current);
+			this.current.then(this.onDoneAjax.bind(this), this.defer.reject.bind(this.defer));
+			if (this.aborted) {
+				this.current.abort();
+			}
+		},
+		abort: function() {
+			this.aborted = true;
+			if (this.current) {
+				this.current.abort();
+			}
+			for (var i=0; i<this.calls.length; i++) {
+				this.calls[i].abort();
+			}
+		},
 		promiseExtend: function() {
 			var that = this;
 			return {
@@ -39,82 +97,12 @@
 					return this;
 				}
 			};
-		},
-		abort: function() {
-			this.aborted = true;
-		},
-		run: function() {
-
 		}
 	};
-
-	var parent = BaseTask.prototype;
-
-	var Onebyone = function() {
-		BaseTask.apply(this, arguments);
-		this.current = null;
-		this.defer = $.Deferred();
-	};
-
-	Onebyone.prototype = {
-		abort: function() {
-			parent.abort.apply(this, arguments);
-			this.current.abort();
-		},
-		run: function() {
-			parent.run.apply(this, arguments);
-			this.createAjax(0);
-			return this.defer.promise(this.promiseExtend());
-		},
-		createAjax: function(i) {
-			var settings = this.ajaxs[i];
-			if (i+1 === this.total) {
-				this.current = $.ajax(settings);
-				this.current.then(this.defer.resolve, this.defer.reject);
-			}
-			else {
-				var that = this;
-				this.current = $.ajax(settings);
-				this.current.then(function() {
-					that.createAjax(i+1);
-				}, this.defer.reject);
-			}
-			if (this.aborted) {
-				this.current.abort();
-			}
-		}
-	};
-
-	Onebyone.prototype = $.extend(Object.create(parent), Onebyone.prototype);
-
-	var Parallel = function() {
-		BaseTask.apply(this, arguments);
-		this.calls = [];
-	};
-
-	Parallel.prototype = {
-		abort: function() {
-			parent.abort.apply(this, arguments);
-			for (var i=0; i<this.calls.length; i++) {
-				this.calls[i].abort();
-			}
-		},
-		run: function() {
-			parent.run.apply(this, arguments);
-			for (var i=0; i<this.total; i++) {
-				var settings = this.ajaxs[i];
-				this.calls.push($.ajax(settings));
-			}
-			return $.when.apply($, this.calls).promise(this.promiseExtend());
-		}
-	};
-
-	Parallel.prototype = $.extend(Object.create(parent), Parallel.prototype);
 
 	var defaultSettings = {
-		mode: 'onebyone'
+		maxParallel: 1
 	};
-
 
 	var AjaxsManager = function(settings) {
 		this.settings = $.extend(true, {}, defaultSettings, settings);
@@ -124,12 +112,8 @@
 	};
 
 	AjaxsManager.prototype = {
-		setParallel: function() {
-			this.settings.mode = 'parallel';
-			return this;
-		},
-		setOnebyone: function() {
-			this.settings.mode = 'onebyone';
+		setMaxParallel: function(maxParallel) {
+			this.settings.maxParallel = maxParallel;
 			return this;
 		},
 		add: function(settings) {
@@ -160,13 +144,7 @@
 
 	$.ajaxs = function(ajaxs, settings) {
 		settings = $.extend(true, {}, defaultSettings, settings);
-		var task;
-		if (settings.mode === 'parallel') {
-			task = new Parallel(ajaxs);
-		}
-		else {
-			task = new Onebyone(ajaxs);
-		}
+		var task = new Parallel(ajaxs, settings);
 		return task.run();
 	};
 
