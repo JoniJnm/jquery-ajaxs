@@ -2,6 +2,7 @@
 Send jQuery ajax requests one by one or pararell
 
 ```javascript
+//two ajaxs requests one by one
 $.ajaxs([{
 		url: '/task/1',
 		data: 'myparam=testing',
@@ -53,8 +54,8 @@ Ajaxs Settings
 
 #### maxParallel
 
-*type*: int
-*default*: 1
+*type*: int  
+*default*: 1  
 How many requests can be processed simultaneously. Set 0 for no limit
 
 
